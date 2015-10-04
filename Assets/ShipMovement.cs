@@ -37,6 +37,12 @@ public class ShipMovement : MonoBehaviour
 		pos.x = Mathf.Clamp (pos.x, hBoundaryMin, hBoundaryMax);
 		pos.z = Mathf.Clamp (pos.z, vBoundaryMin, vBoundaryMax);
 		transform.position = pos;
+		// set velocity components to zero when against boundary
+		// to prevent delayed movement away from edge
+		if (pos.x <= hBoundaryMin || pos.x >= hBoundaryMax)
+			rb.velocity = new Vector3 (0.0f, 0.0f, rb.velocity.z);
+		if (pos.z <= vBoundaryMin || pos.z >= vBoundaryMax)
+			rb.velocity = new Vector3 (rb.velocity.x, 0.0f, 0.0f);
 
 		print ("h: " + rb.velocity.x + ", v: " + rb.velocity.z);
 	}
