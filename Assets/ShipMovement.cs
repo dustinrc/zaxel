@@ -44,6 +44,6 @@ public class ShipMovement : MonoBehaviour
 		if (pos.z <= vBoundaryMin || pos.z >= vBoundaryMax)
 			rb.velocity = new Vector3 (rb.velocity.x, 0.0f, 0.0f);
 
-		print ("h: " + rb.velocity.x + ", v: " + rb.velocity.z);
+//		print ("h: " + rb.velocity.x + ", v: " + rb.velocity.z);
 	}
 }
