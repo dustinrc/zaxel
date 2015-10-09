@@ -4,8 +4,9 @@ using System.Collections;
 public class EnemyKiloMovement : MonoBehaviour
 {
 
-	private float maxSpeed = 3.0f;
+	private float maxSpeed = 5.0f;
 	private float pursuitStrength = 2.0f;
+	private float turnStrenth = 1.0f;
 	private Transform target;
 	private Rigidbody rb;
 
@@ -22,10 +23,13 @@ public class EnemyKiloMovement : MonoBehaviour
 	
 	void Update ()
 	{
-		// TODO: slower, more realistic rotation
-		transform.LookAt (target);
+		// better turning at lower speeds
+		Vector3 lookDirection = (target.position - transform.position).normalized;
+		Quaternion lookRotation = Quaternion.LookRotation (lookDirection);
+		float turnSpeed = maxSpeed - (rb.velocity.magnitude / Mathf.Clamp (turnStrenth, 2.0f, Mathf.Infinity));
+		transform.rotation = Quaternion.Slerp (transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
 
-		// strong thrust from further out, correct direction as get closer
+		// strong thrust from further out, slow to correct direction as get closer
 		float pursuitForce = Vector3.Distance (transform.position, target.position) * pursuitStrength;
 		rb.AddForce (transform.forward * pursuitForce - rb.velocity);
 
